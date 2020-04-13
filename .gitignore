@@ -1,0 +1,6 @@
+/data/mysql_tsv_export
+
+/neo4j
+
+/downloads/*
+!/downloads/.gitkeep
