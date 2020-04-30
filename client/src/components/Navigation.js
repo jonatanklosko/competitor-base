@@ -3,6 +3,7 @@ import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Switch, Route } from 'react-router-dom';
 import Home from './Home';
+import Person from './Person';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -29,8 +30,11 @@ function Navigation() {
       </AppBar>
       <div className={classes.main}>
         <Switch>
-          <Route path="/">
+          <Route exact path="/">
             <Home />
+          </Route>
+          <Route exact path="/persons/:wcaId">
+            <Person />
           </Route>
         </Switch>
       </div>
