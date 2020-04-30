@@ -6,3 +6,8 @@ const driver = neo4j.driver(
 );
 
 const session = driver.session();
+
+export async function query(cypher, params = {}) {
+  const result = await session.run(cypher, params);
+  return result.records.map((record) => record.toObject());
+}
