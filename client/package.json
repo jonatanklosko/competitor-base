@@ -10,8 +10,12 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.9.12",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.1",
+    "prettier": "^2.0.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1"
   },
   "devDependencies": {
@@ -32,6 +36,17 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,json,css,md}": [
+      "prettier --single-quote --trailing-comma es5 --write",
+      "git add"
     ]
   }
 }
