@@ -5,6 +5,7 @@ import { Switch, Route, Link as RouterLink, Redirect } from 'react-router-dom';
 import Home from './Home';
 import Person from './Person';
 import PathFinder from './PathFinder';
+import Competition from './Competition';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -45,6 +46,9 @@ function Navigation() {
           </Route>
           <Route exact path="/persons/:wcaId">
             <Person />
+          </Route>
+          <Route exact path="/competitions/:wcaId">
+            <Competition />
           </Route>
           <Route exact path="/path-finder">
             <PathFinder />

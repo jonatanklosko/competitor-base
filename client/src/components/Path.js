@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { LinearProgress, Typography, Grid, Box } from '@material-ui/core';
+import { LinearProgress, Typography, Grid } from '@material-ui/core';
 import { useQuery } from '../hooks/database';
 import PathNode from './PathNode';
 

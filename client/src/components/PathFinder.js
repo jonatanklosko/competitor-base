@@ -32,10 +32,10 @@ function PathFinder() {
       </Grid>
       <Grid item container spacing={2} justify="center">
         <Grid item xs md={3}>
-          <Search onChange={(node) => setPerson1(node)} />
+          <Search onChange={(node) => setPerson1(node)} label="Person" />
         </Grid>
         <Grid item xs md={3}>
-          <Search onChange={(node) => setPerson2(node)} />
+          <Search onChange={(node) => setPerson2(node)} label="Person" />
         </Grid>
       </Grid>
       <Divider className={classes.divider} />

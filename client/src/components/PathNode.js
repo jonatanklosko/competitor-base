@@ -1,15 +1,13 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Box, Typography, ButtonBase } from '@material-ui/core';
+import { nodeUrl } from '../lib/utils';
 
 function PathNode({ node }) {
   const isCompetition = node.labels.includes('Competition');
-  const url = isCompetition
-    ? `/competitions/${node.properties.wcaId}`
-    : `/persons/${node.properties.wcaId}`;
 
   return (
-    <ButtonBase component={RouterLink} to={url}>
+    <ButtonBase component={RouterLink} to={nodeUrl(node)}>
       <Box
         p={2}
         boxShadow={2}

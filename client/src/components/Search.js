@@ -3,14 +3,14 @@ import { Autocomplete } from '@material-ui/lab';
 import { CircularProgress, TextField } from '@material-ui/core';
 import { runQuery } from '../lib/database';
 
-const query = `
+const queryForLabel = (label) => `
   CALL db.index.fulltext.queryNodes("search", $search) YIELD node
-  WHERE 'Person' IN labels(node)
+  ${label ? `WHERE '${label}' IN labels(node)` : ''}
   RETURN node AS person
   LIMIT 10
 `;
 
-function Search({ onChange, debounceMs = 150 }) {
+function Search({ onChange, debounceMs = 150, label = null }) {
   const [loading, setLoading] = useState(false);
   const [nodes, setNodes] = useState([]);
   const [search, setSearch] = useState('');
@@ -19,7 +19,7 @@ function Search({ onChange, debounceMs = 150 }) {
   useEffect(() => {
     const timeout = setTimeout(() => setDebouncedSearch(search), debounceMs);
     return () => clearTimeout(timeout);
-  }, [search]);
+  }, [search, debounceMs]);
 
   useEffect(() => {
     if (debouncedSearch === '') {
@@ -27,12 +27,12 @@ function Search({ onChange, debounceMs = 150 }) {
       setLoading(false);
     } else {
       setLoading(true);
-      runQuery(query, { search: debouncedSearch })
+      runQuery(queryForLabel(label), { search: debouncedSearch })
         .then((result) => setNodes(result.map((record) => record.person)))
         .catch((error) => console.error(error))
         .finally(() => setLoading(false));
     }
-  }, [debouncedSearch]);
+  }, [debouncedSearch, label]);
 
   return (
     <Autocomplete
