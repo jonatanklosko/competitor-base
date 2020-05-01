@@ -24,3 +24,6 @@ tar xzvf $outfile -C $neo4j_path --strip-components=1
 unzip $gds_outfile -d $neo4j_path/plugins
 
 echo -e "\ndbms.security.procedures.unrestricted=gds.*" >> $neo4j_path/conf/neo4j.conf
+
+# Set the password of 'neo4j' user to 'password'.
+$neo4j_path/bin/neo4j-admin set-initial-password password

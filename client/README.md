@@ -1,4 +1,4 @@
-# Web Client
+# Web client
 
 This is a React application talking directly to the Neo4j database
 using the official [JavaScript driver](https://neo4j.com/docs/api/javascript-driver/current).
@@ -13,3 +13,14 @@ database through a dedicated service (i.e. server).
 The Neo4j's native network protocol *Bolt* operates over a TPC connection or WebSockets
 and thus can be talked to directly from the web browser, which may come in handy in some cases.
 This application demonstrates such usage.
+
+## Development
+
+Node.js is rquired.
+
+```
+npm install
+npm start
+```
+
+Also makes sure to start the Neo4j server.
