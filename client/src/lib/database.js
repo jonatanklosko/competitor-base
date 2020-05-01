@@ -5,9 +5,9 @@ const driver = neo4j.driver(
   neo4j.auth.basic('neo4j', 'password')
 );
 
-const session = driver.session();
-
-export async function query(cypher, params = {}) {
+export async function runQuery(cypher, params = {}) {
+  const session = driver.session();
   const result = await session.run(cypher, params);
+  session.close();
   return result.records.map((record) => record.toObject());
 }

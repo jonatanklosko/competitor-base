@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { query } from '../lib/database';
+import { runQuery } from '../lib/database';
 
 export function useQuery(cypher, params = {}) {
   const [data, setData] = useState(null);
@@ -8,7 +8,7 @@ export function useQuery(cypher, params = {}) {
 
   useEffect(() => {
     setLoading(true);
-    query(cypher, params)
+    runQuery(cypher, params)
       .then((result) => setData(result))
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
