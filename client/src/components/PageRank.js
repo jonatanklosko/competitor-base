@@ -1,5 +1,4 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 import { LinearProgress, Typography, Paper, Grid } from '@material-ui/core';
 import { useQuery } from '../hooks/database';
 import PageRankList from './PageRankList';
@@ -29,7 +28,8 @@ function PageRank() {
           This ranking presents the most important community members. Such
           information may be interesiting for companies willing to sign a
           sponsorship agreement with competitors in order to promote their
-          brand.
+          brand. The relevant link between competitors here is whether they have
+          been to the same competition.
         </Typography>
       </Grid>
       <Grid item>
