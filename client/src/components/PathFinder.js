@@ -31,7 +31,7 @@ function PathFinder() {
       pathname: '/path-finder',
       search: `?wcaId1=${wcaId1}&wcaId2=${wcaId2}`,
     });
-  }, [wcaId1, wcaId2]);
+  }, [wcaId1, wcaId2, history]);
 
   return (
     <Grid container direction="column" spacing={2} alignItems="center">

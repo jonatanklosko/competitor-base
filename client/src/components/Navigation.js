@@ -7,6 +7,7 @@ import Person from './Person';
 import PathFinder from './PathFinder';
 import Competition from './Competition';
 import PageRank from './PageRank';
+import Records from './Records';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -40,6 +41,9 @@ function Navigation() {
           <Button color="inherit" component={RouterLink} to="/page-rank">
             Page rank
           </Button>
+          <Button color="inherit" component={RouterLink} to="/records">
+            Records
+          </Button>
         </Toolbar>
       </AppBar>
       <div className={classes.main}>
@@ -58,6 +62,9 @@ function Navigation() {
           </Route>
           <Route exact path="/page-rank">
             <PageRank />
+          </Route>
+          <Route exact path="/records">
+            <Records />
           </Route>
           <Redirect to="/" />
         </Switch>
