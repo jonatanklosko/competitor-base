@@ -1,5 +1,7 @@
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import {
+  Link,
   LinearProgress,
   Table,
   TableHead,
@@ -9,6 +11,7 @@ import {
 } from '@material-ui/core';
 import { useQuery } from '../hooks/database';
 import { formatAttemptResult } from '../lib/formatters';
+import { nodeUrl } from '../lib/utils';
 
 const query = `
   MATCH
@@ -38,11 +41,15 @@ function RoundResultsTable({ round, event }) {
       </TableHead>
       <TableBody>
         {data.map(({ result, person }) => (
-          <TableRow>
+          <TableRow key={result.identity}>
             <TableCell>{result.properties.rank.toInt()}</TableCell>
-            <TableCell>{person.properties.name}</TableCell>
-            {result.properties.attempts.map((attempt) => (
-              <TableCell align="right">
+            <TableCell>
+              <Link component={RouterLink} to={nodeUrl(person)}>
+                {person.properties.name}
+              </Link>
+            </TableCell>
+            {result.properties.attempts.map((attempt, index) => (
+              <TableCell align="right" key={index}>
                 {formatAttemptResult(attempt.toInt(), event.properties.wcaId)}
               </TableCell>
             ))}
