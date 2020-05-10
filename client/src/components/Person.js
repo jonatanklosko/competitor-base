@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { LinearProgress, Typography, Paper, Grid } from '@material-ui/core';
 import { useQuery } from '../hooks/database';
 import PersonalBestsTable from './PersonalBestsTable';
+import PersonCompetitionList from './PersonCompetitionList';
 
 const query = `
   MATCH
@@ -10,6 +11,8 @@ const query = `
     (p)-[:CITIZEN_OF]->(country:Country),
     (p)-[:COMPETED_IN]->(c:Competition),
     (p)-[pb:PERSONAL_BEST]->(e:Event)
+  WITH p, country, c, pb, e
+  ORDER BY c.startDate DESC
   RETURN
     p AS person,
     country AS country,
@@ -42,6 +45,14 @@ function Person() {
         </Typography>
         <Paper>
           <PersonalBestsTable personalBests={personalBests} />
+        </Paper>
+      </Grid>
+      <Grid item>
+        <Typography variant="h6" gutterBottom>
+          Competitions
+        </Typography>
+        <Paper>
+          <PersonCompetitionList competitions={competitions} />
         </Paper>
       </Grid>
     </Grid>
