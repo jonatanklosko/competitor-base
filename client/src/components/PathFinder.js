@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 import { Grid, Typography, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Search from './Search';
@@ -14,11 +15,23 @@ const useStyles = makeStyles((theme) => ({
 
 function PathFinder() {
   const classes = useStyles();
-  const [person1, setPerson1] = useState(null);
-  const [person2, setPerson2] = useState(null);
 
-  const showPath =
-    person1 && person2 && person1.properties.wcaId !== person2.properties.wcaId;
+  const history = useHistory();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+
+  const [wcaId1, setWcaId1] = useState(searchParams.get('wcaId1') || null);
+  const [wcaId2, setWcaId2] = useState(searchParams.get('wcaId2') || null);
+
+  const showPath = wcaId1 && wcaId2 && wcaId1 !== wcaId2;
+
+  useEffect(() => {
+    if (!wcaId1 || !wcaId2) return;
+    history.push({
+      pathname: '/path-finder',
+      search: `?wcaId1=${wcaId1}&wcaId2=${wcaId2}`,
+    });
+  }, [wcaId1, wcaId2]);
 
   return (
     <Grid container direction="column" spacing={2} alignItems="center">
@@ -32,21 +45,20 @@ function PathFinder() {
       </Grid>
       <Grid item container spacing={2} justify="center">
         <Grid item xs md={3}>
-          <Search onChange={(node) => setPerson1(node)} label="Person" />
+          <Search
+            onChange={(node) => setWcaId1(node && node.properties.wcaId)}
+            label="Person"
+          />
         </Grid>
         <Grid item xs md={3}>
-          <Search onChange={(node) => setPerson2(node)} label="Person" />
+          <Search
+            onChange={(node) => setWcaId2(node && node.properties.wcaId)}
+            label="Person"
+          />
         </Grid>
       </Grid>
       <Divider className={classes.divider} />
-      <Grid item>
-        {showPath && (
-          <Path
-            wcaId1={person1.properties.wcaId}
-            wcaId2={person2.properties.wcaId}
-          />
-        )}
-      </Grid>
+      <Grid item>{showPath && <Path wcaId1={wcaId1} wcaId2={wcaId2} />}</Grid>
     </Grid>
   );
 }
