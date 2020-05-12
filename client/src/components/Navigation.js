@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Switch, Route, Link as RouterLink, Redirect } from 'react-router-dom';
 import Home from './Home';
 import Person from './Person';
-import PathFinder from './PathFinder';
+import Compare from './Compare';
 import Competition from './Competition';
 import PageRank from './PageRank';
 import Records from './Records';
@@ -35,8 +35,8 @@ function Navigation() {
           >
             Competitor Base
           </Typography>
-          <Button color="inherit" component={RouterLink} to="/path-finder">
-            Path finder
+          <Button color="inherit" component={RouterLink} to="/compare">
+            Compare
           </Button>
           <Button color="inherit" component={RouterLink} to="/page-rank">
             Page rank
@@ -57,8 +57,8 @@ function Navigation() {
           <Route exact path="/competitions/:wcaId">
             <Competition />
           </Route>
-          <Route exact path="/path-finder">
-            <PathFinder />
+          <Route exact path="/compare">
+            <Compare />
           </Route>
           <Route exact path="/page-rank">
             <PageRank />

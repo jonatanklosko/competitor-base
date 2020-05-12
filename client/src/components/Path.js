@@ -23,6 +23,11 @@ function Path({ wcaId1, wcaId2 }) {
   return (
     <Grid container direction="column" spacing={2} alignItems="center">
       <Grid item>
+        <Typography align="center">
+          This is the shortest link between the competitors.
+        </Typography>
+      </Grid>
+      <Grid item>
         <PathNode node={first} />
       </Grid>
       {rest.map((node) => {

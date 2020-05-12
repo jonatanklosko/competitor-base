@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { Grid, Typography, Divider } from '@material-ui/core';
+import { Grid, Typography, Divider, Tabs, Tab } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Search from './Search';
 import Path from './Path';
+import CompareResults from './CompareResults';
 
 const useStyles = makeStyles((theme) => ({
   divider: {
     width: '100%',
     marginTop: theme.spacing(2),
+  },
+  tabs: {
     marginBottom: theme.spacing(2),
   },
 }));
@@ -22,13 +25,14 @@ function PathFinder() {
 
   const [wcaId1, setWcaId1] = useState(searchParams.get('wcaId1') || null);
   const [wcaId2, setWcaId2] = useState(searchParams.get('wcaId2') || null);
+  const [tab, setTab] = useState('path');
 
-  const showPath = wcaId1 && wcaId2 && wcaId1 !== wcaId2;
+  const peopleSelected = wcaId1 && wcaId2 && wcaId1 !== wcaId2;
 
   useEffect(() => {
     if (!wcaId1 || !wcaId2) return;
     history.push({
-      pathname: '/path-finder',
+      pathname: '/compare',
       search: `?wcaId1=${wcaId1}&wcaId2=${wcaId2}`,
     });
   }, [wcaId1, wcaId2, history]);
@@ -40,7 +44,7 @@ function PathFinder() {
           Find a connection between people
         </Typography>
         <Typography align="center">
-          This looks up the shortest link between competitors.
+          See how people are related and compare their results.
         </Typography>
       </Grid>
       <Grid item container spacing={2} justify="center">
@@ -58,7 +62,25 @@ function PathFinder() {
         </Grid>
       </Grid>
       <Divider className={classes.divider} />
-      <Grid item>{showPath && <Path wcaId1={wcaId1} wcaId2={wcaId2} />}</Grid>
+      {peopleSelected && (
+        <Fragment>
+          <Tabs
+            value={tab}
+            className={classes.tabs}
+            onChange={(event, value) => setTab(value)}
+          >
+            <Tab label="Path" value="path" />
+            <Tab label="Compare PBs" value="compare" />
+            <Tab label="Results history" value="results-history" />
+          </Tabs>
+          <Grid item>
+            {tab === 'path' && <Path wcaId1={wcaId1} wcaId2={wcaId2} />}
+            {tab === 'compare' && (
+              <CompareResults wcaId1={wcaId1} wcaId2={wcaId2} />
+            )}
+          </Grid>
+        </Fragment>
+      )}
     </Grid>
   );
 }
