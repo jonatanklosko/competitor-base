@@ -5,6 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Search from './Search';
 import Path from './Path';
 import CompareResults from './CompareResults';
+import CompareResultsHistory from './CompareResultsHistory';
+import CommonCompetitions from './CommonCompetitions';
 
 const useStyles = makeStyles((theme) => ({
   divider: {
@@ -72,11 +74,18 @@ function PathFinder() {
             <Tab label="Path" value="path" />
             <Tab label="Compare PBs" value="compare" />
             <Tab label="Results history" value="results-history" />
+            <Tab label="Common competitions" value="common-competitions" />
           </Tabs>
           <Grid item>
             {tab === 'path' && <Path wcaId1={wcaId1} wcaId2={wcaId2} />}
             {tab === 'compare' && (
               <CompareResults wcaId1={wcaId1} wcaId2={wcaId2} />
+            )}
+            {tab === 'results-history' && (
+              <CompareResultsHistory wcaId1={wcaId1} wcaId2={wcaId2} />
+            )}
+            {tab === 'common-competitions' && (
+              <CommonCompetitions wcaId1={wcaId1} wcaId2={wcaId2} />
             )}
           </Grid>
         </Fragment>
