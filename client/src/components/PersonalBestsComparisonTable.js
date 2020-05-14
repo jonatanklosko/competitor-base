@@ -74,7 +74,7 @@ function PersonalBestsComparisonTable({
                 personalBest.properties.type === 'average'
             ) || {};
           return (
-            <Fragment>
+            <Fragment key={wcaEvent.wcaId}>
               <TableRow>
                 <TableCell rowSpan={2}>{wcaEvent.name}</TableCell>
                 <TableCell>Single</TableCell>

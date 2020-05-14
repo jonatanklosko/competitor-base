@@ -7,3 +7,11 @@ export function nodeUrl(node) {
   }
   throw new Error('The given node has no corresponding page.');
 }
+
+export function unique(array) {
+  return [...new Set(array)];
+}
+
+export function range(from, to) {
+  return Array.from({ length: to - from + 1 }).map((_, i) => from + i);
+}
