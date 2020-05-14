@@ -20,7 +20,7 @@ const query = `
     collect(DISTINCT { personalBest: pb2, event: e2 }) AS personalBests2
 `;
 
-function CompareResults({ wcaId1, wcaId2 }) {
+function ComparePersonalBests({ wcaId1, wcaId2 }) {
   const { data, loading, error } = useQuery(query, { wcaId1, wcaId2 });
 
   if (loading) return <LinearProgress />;
@@ -39,4 +39,4 @@ function CompareResults({ wcaId1, wcaId2 }) {
     </div>
   );
 }
-export default CompareResults;
+export default ComparePersonalBests;
