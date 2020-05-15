@@ -5,7 +5,7 @@ import { nodeUrl } from '../lib/utils';
 
 function PersonCompetitionList({ competitions }) {
   return (
-    <List>
+    <List style={{ maxHeight: 400, overflowY: 'auto' }}>
       {competitions.map((competition) => (
         <ListItem
           key={competition.properties.wcaId}

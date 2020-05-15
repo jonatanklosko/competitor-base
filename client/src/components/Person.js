@@ -4,6 +4,7 @@ import { LinearProgress, Typography, Paper, Grid } from '@material-ui/core';
 import { useQuery } from '../hooks/database';
 import PersonalBestsTable from './PersonalBestsTable';
 import PersonCompetitionList from './PersonCompetitionList';
+import VisitedCountriesPieChart from './VisitedCountriesPieChart';
 
 const query = `
   MATCH
@@ -54,6 +55,12 @@ function Person() {
         <Paper>
           <PersonCompetitionList competitions={competitions} />
         </Paper>
+      </Grid>
+      <Grid item>
+        <Typography variant="h6" gutterBottom>
+          Visited countries
+        </Typography>
+        <VisitedCountriesPieChart personWcaId={wcaId} />
       </Grid>
     </Grid>
   );
