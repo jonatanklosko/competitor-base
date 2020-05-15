@@ -27,13 +27,13 @@ function EventsPieChart({ personWcaId }) {
 
   return (
     <RadialBarChart
-      width={800}
-      height={450}
+      width={400}
+      height={400}
       innerRadius="10%"
       outerRadius="90%"
       data={plotData}
       startAngle={180}
-      endAngle={0}
+      endAngle={-180}
     >
       <RadialBar
         dataKey="count"
@@ -41,9 +41,8 @@ function EventsPieChart({ personWcaId }) {
         minAngle={15}
         label={{ fill: '#fff', position: 'insideStart' }}
         background
-        clockWise={true}
       />
-      <Legend
+      {/* <Legend
         iconType="circle"
         iconSize={15}
         width={300}
@@ -51,7 +50,7 @@ function EventsPieChart({ personWcaId }) {
         layout="vertical"
         verticalAlign="top"
         align="left"
-      />
+      /> */}
       <Tooltip labelFormatter={(index) => plotData[index].name} />
     </RadialBarChart>
   );

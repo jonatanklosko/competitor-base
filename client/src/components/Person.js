@@ -6,6 +6,7 @@ import PersonalBestsTable from './PersonalBestsTable';
 import PersonCompetitionList from './PersonCompetitionList';
 import VisitedCountriesPieChart from './VisitedCountriesPieChart';
 import EventsPieChart from './EventsPieChart';
+import CompetitionsByYearBarPlot from './CompetitionsByYearBarPlot';
 
 const query = `
   MATCH
@@ -49,6 +50,32 @@ function Person() {
           <PersonalBestsTable personalBests={personalBests} />
         </Paper>
       </Grid>
+      <Grid
+        item
+        container
+        spacing={2}
+        justify="space-evenly"
+        style={{ marginTop: 16, marginBottom: 16 }}
+      >
+        <Grid item>
+          <Typography variant="h6" gutterBottom align="center">
+            Visited countries
+          </Typography>
+          <VisitedCountriesPieChart personWcaId={wcaId} />
+        </Grid>
+        <Grid item>
+          <Typography variant="h6" gutterBottom align="center">
+            Events
+          </Typography>
+          <EventsPieChart personWcaId={wcaId} />
+        </Grid>
+        <Grid item>
+          <Typography variant="h6" gutterBottom align="center">
+            Competitions by year
+          </Typography>
+          <CompetitionsByYearBarPlot personWcaId={wcaId} />
+        </Grid>
+      </Grid>
       <Grid item>
         <Typography variant="h6" gutterBottom>
           Competitions
@@ -56,20 +83,6 @@ function Person() {
         <Paper>
           <PersonCompetitionList competitions={competitions} />
         </Paper>
-      </Grid>
-      <Grid item container spacing={2} justify="space-between">
-        <Grid item>
-          <Typography variant="h6" gutterBottom>
-            Visited countries
-          </Typography>
-          <VisitedCountriesPieChart personWcaId={wcaId} />
-        </Grid>
-        <Grid item>
-          <Typography variant="h6" gutterBottom>
-            Events
-          </Typography>
-          <EventsPieChart personWcaId={wcaId} />
-        </Grid>
       </Grid>
     </Grid>
   );
