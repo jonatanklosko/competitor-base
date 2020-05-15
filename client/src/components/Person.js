@@ -5,6 +5,7 @@ import { useQuery } from '../hooks/database';
 import PersonalBestsTable from './PersonalBestsTable';
 import PersonCompetitionList from './PersonCompetitionList';
 import VisitedCountriesPieChart from './VisitedCountriesPieChart';
+import EventsPieChart from './EventsPieChart';
 
 const query = `
   MATCH
@@ -56,11 +57,19 @@ function Person() {
           <PersonCompetitionList competitions={competitions} />
         </Paper>
       </Grid>
-      <Grid item>
-        <Typography variant="h6" gutterBottom>
-          Visited countries
-        </Typography>
-        <VisitedCountriesPieChart personWcaId={wcaId} />
+      <Grid item container spacing={2} justify="space-between">
+        <Grid item>
+          <Typography variant="h6" gutterBottom>
+            Visited countries
+          </Typography>
+          <VisitedCountriesPieChart personWcaId={wcaId} />
+        </Grid>
+        <Grid item>
+          <Typography variant="h6" gutterBottom>
+            Events
+          </Typography>
+          <EventsPieChart personWcaId={wcaId} />
+        </Grid>
       </Grid>
     </Grid>
   );

@@ -2,6 +2,7 @@ import React from 'react';
 import { CircularProgress } from '@material-ui/core';
 import { useQuery } from '../hooks/database';
 import { PieChart, Pie, Tooltip } from 'recharts';
+import { getColor } from '../lib/colors';
 
 const query = `
   MATCH
@@ -17,21 +18,16 @@ function VisitedCountriesPieChart({ personWcaId }) {
   if (loading) return <CircularProgress />;
   if (error) return error.message;
 
-  const plotData = data.map(({ country, count }) => ({
+  const plotData = data.map(({ country, count }, index) => ({
     name: country.properties.name,
     count: count.toInt(),
+    fill: getColor(index),
   }));
 
   return (
     <PieChart width={400} height={400}>
       <Tooltip />
-      <Pie
-        data={plotData}
-        dataKey="count"
-        nameKey="name"
-        fill="#82ca9d"
-        label
-      />
+      <Pie data={plotData} dataKey="count" nameKey="name" fill="fill" label />
     </PieChart>
   );
 }
