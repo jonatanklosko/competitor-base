@@ -1,7 +1,7 @@
 import React from 'react';
 import { CircularProgress } from '@material-ui/core';
 import { useQuery } from '../hooks/database';
-import { RadialBarChart, RadialBar, Legend, Tooltip } from 'recharts';
+import { RadialBarChart, RadialBar, Tooltip } from 'recharts';
 import { getColor } from '../lib/colors';
 
 const query = `

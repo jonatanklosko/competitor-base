@@ -6,7 +6,38 @@ Autorzy: [Jonatan Kłosko](https://github.com/jonatanklosko), [Oliwia Masiarek](
 
 ## Spis treści
 
-<!-- TBA -->
+  - [1. Cel](#1-cel)
+  - [2. Kontekst](#2-kontekst)
+  - [3. Zbiór danych](#3-zbi%c3%b3r-danych)
+  - [4. Model grafowy](#4-model-grafowy)
+    - [Wierzchołki](#wierzcho%c5%82ki)
+      - [`Country`](#country)
+      - [`Event`](#event)
+      - [`Competition`](#competition)
+      - [`Person`](#person)
+      - [`Round`](#round)
+    - [Relacje](#relacje)
+      - [`CITIZEN_OF` (`Person` -> `Country`)](#citizenof-person---country)
+      - [`ORGANIZED_IN` (`Competition` -> `Country`)](#organizedin-competition---country)
+      - [`COMPETED_IN` (`Person` -> `Competition`)](#competedin-person---competition)
+      - [`RESULT_IN` (`Person` -> `Round`)](#resultin-person---round)
+      - [`HELD_IN` (`Round` -> `Competition`)](#heldin-round---competition)
+      - [`OF_EVENT` (`Round` -> `Event`)](#ofevent-round---event)
+      - [`PERSONAL_BEST` (`Person` -> `Event`)](#personalbest-person---event)
+  - [5. Porównanie schematu relacyjnego z grafowym](#5-por%c3%b3wnanie-schematu-relacyjnego-z-grafowym)
+  - [6. Importowanie danych](#6-importowanie-danych)
+    - [Wstęp](#wst%c4%99p)
+    - [Generowanie plików TSV na podstawie bazy relacyjnej](#generowanie-plik%c3%b3w-tsv-na-podstawie-bazy-relacyjnej)
+      - [Przykład pliku z wierzchołkami - `Competition`](#przyk%c5%82ad-pliku-z-wierzcho%c5%82kami---competition)
+      - [Przykład pliku z relacjami - `ORGANIZED_IN`](#przyk%c5%82ad-pliku-z-relacjami---organizedin)
+    - [Importowanie plików TSV do bazy grafowej Neo4j](#importowanie-plik%c3%b3w-tsv-do-bazy-grafowej-neo4j)
+  - [7. Aplikacja](#7-aplikacja)
+    - [Główna strona](#g%c5%82%c3%b3wna-strona)
+    - [Strona zawodów](#strona-zawod%c3%b3w)
+    - [Strona zawodnika](#strona-zawodnika)
+    - [Porównanie zawodników](#por%c3%b3wnanie-zawodnik%c3%b3w)
+    - [Page rank](#page-rank)
+    - [Rekordy](#rekordy)
 
 ## 1. Cel
 
@@ -290,18 +321,23 @@ lokalnej bazy.
 
 ## 7. Aplikacja
 
-### Główna strona
-Na głównej stronie można wybrać konkretnego zawodnika bądź zawody z bazy. Dodatkowo można przejść do konkretnych zakładek:
-- porównanie zawodników
-- page rank
-- rekordy
+Stworzono aplikację webową jako dedykowanego klienta bazy.
+Aplikacja ta wykonuje zapytania bezpośrednio do bazy Neo4j
+przy pomocy oficjalnego [drivera JavaScript'owego](https://neo4j.com/docs/api/javascript-driver/current)
+i zawiera różne widoki prezentujące te dane.
 
-![](images/main_page.png)
+### Główna strona
+Na głównej stronie można wybrać konkretnego zawodnika bądź zawody z bazy. Dodatkowo można przejść do zakładek:
+- porównanie zawodników
+- Page Rank
+- lista rekordów
+
+![](images/main-page.png)
 
 ### Strona zawodów
 Na stronie zawodów można zobaczyć wyniki poszczególnych konkurencji i rund
 
-![](images/competition.png)
+![](images/competition1.png)
 
 ![](images/competition2.png)
 
@@ -322,16 +358,21 @@ W zakładce COMPARE można porównać dwóch zawodników:
 
 ![](images/path.png)
 
-![](images/compare_pbs.png)
+![](images/compare-pbs.png)
 
-![](images/compare_results.png)
+![](images/compare-results.png)
 
-![](images/compare_competitions.png)
+![](images/compare-competitions.png)
 
 ### Page rank
-W zakładce page rank
+W zakładce page rank znajduje się lista stu zawodników z najwyższą wartością wyznaczoną
+przez algorytm Page Rank (gdzie za połaczenie między zawodnikami przyjmujemy obecność na tych samych zawodach).
+Zawodnicy o najwyższej wartości są najbardziej znaczącymi członkami społeczności.
+Do wyznaczenia wartości Page Rank wykorzystano procedurę z biblioteki
+[Graph Data Science](https://neo4j.com/docs/graph-data-science/current/algorithms/page-rank),
+stanowiącej rozszerzenie do bazy Neo4j.
 
-![](images/page_rank.png)
+![](images/page-rank.png)
 
 
 ### Rekordy
