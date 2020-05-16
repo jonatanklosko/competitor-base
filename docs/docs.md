@@ -286,3 +286,55 @@ Pełne wywołanie polecenia można znaleźć w skrypcie `data/import.sh`.
 W celu maksymalnego zautomatyzowania procesu tworzenia bazy danych utworzono skrypt `bin/setup_db.sh`
 pobierający bazę Neo4j do lokalnego folderu, a następnie importujący dane do tejże
 lokalnej bazy.
+
+
+## 7. Aplikacja
+
+### Główna strona
+Na głównej stronie można wybrać konkretnego zawodnika bądź zawody z bazy. Dodatkowo można przejść do konkretnych zakładek:
+- porównanie zawodników
+- page rank
+- rekordy
+
+![](images/main_page.png)
+
+### Strona zawodów
+Na stronie zawodów można zobaczyć wyniki poszczególnych konkurencji i rund
+
+![](images/competition.png)
+
+![](images/competition2.png)
+
+### Strona zawodnika
+Na stronie zawodnika można zobaczyć jego rekordy, wykresy dotyczące jego udziału w zawodach oraz poszczególnych konkurencjach. Dodatkowo mamy listę zawodów, w których uczestniczył.
+
+![](images/competitor1.png)
+
+![](images/competitor2.png)
+
+
+### Porównanie zawodników
+W zakładce COMPARE można porównać dwóch zawodników:
+- najkrótsza ścieżka ich łącząca
+- porównanie rekordów życiowych
+- porównanie osiąganych czasów w danych konkurencjach na przestrzeni czasu w formie wykresów
+- wspólne zawody
+
+![](images/path.png)
+
+![](images/compare_pbs.png)
+
+![](images/compare_results.png)
+
+![](images/compare_competitions.png)
+
+### Page rank
+W zakładce page rank
+
+![](images/page_rank.png)
+
+
+### Rekordy
+W zakładce rekordy pokazane są rekordy świata w danych konkurencjach.
+
+![](images/records.png)
