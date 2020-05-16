@@ -37,3 +37,5 @@ The Neo4j interface can be accessed at [http://localhost:7474](http://localhost:
 **Web client**
 
 Please see the correspondig [README](client/README.md).
+
+![](docs/images/app.gif)

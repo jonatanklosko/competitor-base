@@ -38,6 +38,7 @@ Autorzy: [Jonatan Kłosko](https://github.com/jonatanklosko), [Oliwia Masiarek](
     - [Porównanie zawodników](#por%c3%b3wnanie-zawodnik%c3%b3w)
     - [Page rank](#page-rank)
     - [Rekordy](#rekordy)
+  - [8. Wnioski](#8-wnioski)
 
 ## 1. Cel
 
@@ -318,7 +319,6 @@ W celu maksymalnego zautomatyzowania procesu tworzenia bazy danych utworzono skr
 pobierający bazę Neo4j do lokalnego folderu, a następnie importujący dane do tejże
 lokalnej bazy.
 
-
 ## 7. Aplikacja
 
 Stworzono aplikację webową jako dedykowanego klienta bazy.
@@ -379,3 +379,21 @@ stanowiącej rozszerzenie do bazy Neo4j.
 W zakładce rekordy pokazane są rekordy świata w danych konkurencjach.
 
 ![](images/records.png)
+
+## 8. Wnioski
+
+Kilka spostrzeżeń odnotowanych podczas realizacji projektu.
+
+1. Baza Neo4j posiada narzędzie do wysoce efektywnego importowania danych z tekstowych plików CSV/TSV.
+2. Grafowy model pozwalił na wyrażenie danych i relacji między nimi w bardziej naturalny
+   i zrozumiały sposób niż model relacyjny.
+3. Neo4j posiada bogaty zasób typów, w szczególności tablice, obiekty, daty, współrzędne geograficzne.
+4. Neo4j posiada możliwość tworzenia wspólnego indeksu tekstowego na wielu polach
+   wierzchołków wielu typów, czego zastosowaniem może być globalne globalne przeszukiwanie zwartości aplikacji.
+5. Neo4j pozwala na rozszerzanie funkcjonalności bazy poprzez dodatkowe pakiety.
+   Wartym uwagi jest [Graph Data Science Library](https://neo4j.com/docs/graph-data-science/current/)
+   posiadjący implementacje wielu algorytmów grafowych (np. Page Rank).
+6. Język zapytań Cypher pozwala na deklaratywne wyspecyfikowanie potrzebnych danych
+   oraz umożliwia zwracanie danych w wygodnej postaci. Przykładowo możemy uzyskać rekord zawierający
+   wierzchołek wraz z listą powiązanych wierzchołków, co w przypadku bazy relacyjnej wymaga
+   dodatkowego przetwarzania (*hydration*).
