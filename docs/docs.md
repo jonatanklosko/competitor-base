@@ -334,6 +334,15 @@ Na głównej stronie można wybrać konkretnego zawodnika bądź zawody z bazy. 
 
 ![](images/main-page.png)
 
+**Zapytanie - globalne wyszukiwanie**
+
+```cypher
+CALL db.index.fulltext.queryNodes("search", $search) YIELD node
+WHERE "Person" IN labels(node)
+RETURN node AS person
+LIMIT 10
+```
+
 ### Strona zawodów
 Na stronie zawodów można zobaczyć wyniki poszczególnych konkurencji i rund
 
@@ -341,12 +350,78 @@ Na stronie zawodów można zobaczyć wyniki poszczególnych konkurencji i rund
 
 ![](images/competition2.png)
 
+**Zapytanie**
+
+```cypher
+MATCH
+  (c:Competition { wcaId: $wcaId }),
+  (c)-[organizedIn:ORGANIZED_IN]->(country:Country),
+  (c)<-[:HELD_IN]-(r:Round),
+  (r)-[:OF_EVENT]->(e:Event)
+WITH c, organizedIn, country, r, e
+ORDER BY e.name, r.roundNumber
+RETURN
+  c AS competition,
+  organizedIn AS organizedIn,
+  country AS country,
+  collect({ round: r, event: e }) AS roundsWithEvent
+```
+
 ### Strona zawodnika
 Na stronie zawodnika można zobaczyć jego rekordy, wykresy dotyczące jego udziału w zawodach oraz poszczególnych konkurencjach. Dodatkowo mamy listę zawodów, w których uczestniczył.
 
 ![](images/competitor1.png)
 
+**Zapytanie - wyniki i zawody osoby**
+
+```cypher
+MATCH
+  (p:Person { wcaId: $wcaId }),
+  (p)-[:CITIZEN_OF]->(country:Country),
+  (p)-[:COMPETED_IN]->(c:Competition),
+  (p)-[pb:PERSONAL_BEST]->(e:Event)
+WITH p, country, c, pb, e
+ORDER BY c.startDate DESC
+RETURN
+  p AS person,
+  country AS country,
+  collect(DISTINCT c) AS competitions,
+  collect(DISTINCT { personalBest: pb, event: e }) AS personalBests
+```
+
 ![](images/competitor2.png)
+
+**Zapytanie - odwiedzone kraje**
+
+```cypher
+MATCH
+  (p:Person { wcaId: $wcaId }),
+  (p)-[:COMPETED_IN]->(c:Competition),
+  (c)-[:ORGANIZED_IN]->(country:Country)
+RETURN country, COUNT(*) AS count
+```
+
+**Zapytanie - udział w konkurencjach**
+
+```cypher
+MATCH
+  (p:Person { wcaId: $wcaId }),
+  (p)-[:RESULT_IN]->(:Round)-[:OF_EVENT]->(event:Event)
+WITH event, COUNT(*) AS count
+ORDER BY count
+RETURN event, count
+```
+
+**Zapytanie - histogram zawodów**
+
+```cypher
+MATCH
+  (p:Person { wcaId: $wcaId }),
+  (p)-[:COMPETED_IN]->(c:Competition)
+WITH p, c
+ORDER BY c.startDate.year
+RETURN c.startDate.year AS year, COUNT(*) AS count
+```
 
 
 ### Porównanie zawodników
@@ -358,11 +433,79 @@ W zakładce COMPARE można porównać dwóch zawodników:
 
 ![](images/path.png)
 
+**Zapytanie - najkrótsza ścieżka łącząca dwóch zawodników**
+
+```cypher
+MATCH
+  (p1:Person { wcaId: $wcaId1 }),
+  (p2:Person { wcaId: $wcaId2 }),
+  path = shortestPath((p1)-[:COMPETED_IN*]-(p2))
+RETURN nodes(path) AS nodes
+```
+
 ![](images/compare-pbs.png)
+
+**Zapytanie - porównanie rekordów życiowych zawodników**
+
+```cypher
+MATCH
+  (p1:Person { wcaId: $wcaId1 }),
+  (p2:Person { wcaId: $wcaId2 }),
+  (p1)-[:CITIZEN_OF]->(c1:Country),
+  (p2)-[:CITIZEN_OF]->(c2:Country),
+  (p1)-[pb1:PERSONAL_BEST]->(e1:Event),
+  (p2)-[pb2:PERSONAL_BEST]->(e2:Event)
+RETURN
+  p1 AS person1,
+  p2 AS person2,
+  c1 AS country1,
+  c2 AS country2,
+  collect(DISTINCT { personalBest: pb1, event: e1 }) AS personalBests1,
+  collect(DISTINCT { personalBest: pb2, event: e2 }) AS personalBests2
+```
 
 ![](images/compare-results.png)
 
+**Zapytanie - porównanie czasów osiąganych przez zawodników w konkurencjach na przestrzeni czasu**
+
+```cypher
+MATCH
+  (p:Person { wcaId: $wcaId1 }),
+  (p)-[result:RESULT_IN]->(round:Round)-[:OF_EVENT]->(e:Event { wcaId: $eventWcaId }),
+  (round)-[:HELD_IN]->(c:Competition)
+WITH p, result, c, round
+ORDER BY c.startDate, round.roundNumber
+RETURN
+  p AS person,
+  collect(DISTINCT { result: result, competition: c, round: round }) AS resultsData
+UNION ALL
+MATCH
+  (p:Person { wcaId: $wcaId2 }),
+  (p)-[result:RESULT_IN]->(round:Round)-[:OF_EVENT]->(e:Event { wcaId: $eventWcaId }),
+  (round)-[:HELD_IN]->(c:Competition)
+WITH p, result, c, round
+ORDER BY c.startDate, round.roundNumber
+RETURN
+  p AS person,
+  collect(DISTINCT { result: result, competition: c, round: round }) AS resultsData
+```
+
 ![](images/compare-competitions.png)
+
+**Zapytanie - wspólne zawody zawodników**
+
+```cypher
+MATCH
+  (p1:Person { wcaId: $wcaId1 }),
+  (p2:Person { wcaId: $wcaId2 }),
+  (p1)-[:COMPETED_IN]->(c:Competition),
+  (p2)-[:COMPETED_IN]->(c),
+  (c)-[:ORGANIZED_IN]->(country: Country)
+WITH c, country
+ORDER BY c.startDate DESC
+RETURN c AS competition, country AS country
+```
+
 
 ### Page rank
 W zakładce page rank znajduje się lista stu zawodników z najwyższą wartością wyznaczoną
@@ -374,11 +517,31 @@ stanowiącej rozszerzenie do bazy Neo4j.
 
 ![](images/page-rank.png)
 
+**Zapytanie - page rank**
+
+```cypher
+MATCH (p:Person)-[:CITIZEN_OF]->(c:Country)
+  RETURN { person: p, country: c } AS personWithCountry
+  ORDER BY p.pageRank DESC
+  LIMIT 100
+```
 
 ### Rekordy
 W zakładce rekordy pokazane są rekordy świata w danych konkurencjach.
 
 ![](images/records.png)
+
+**Zapytanie - rekordy świata w danych konkurencjach**
+
+```cypher
+MATCH
+  (e:Event),
+  (e)<-[record:PERSONAL_BEST { worldRank: 1 }]-(p:Person),
+  (p)-[:CITIZEN_OF]->(c:Country)
+RETURN
+  e AS event,
+  collect({ record: record, person: p, country: c }) AS recordsWithPerson
+```
 
 ## 8. Wnioski
 
